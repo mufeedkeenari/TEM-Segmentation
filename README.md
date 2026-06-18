@@ -1,6 +1,3 @@
-ok now?
-
-
 # TEM Image Segmentation Engine
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
