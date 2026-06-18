@@ -77,7 +77,7 @@ jupyter notebook notebooks/01_eda.ipynb
 * [x] **Phase 1:** Scaffold modular architecture and strict `.gitignore` protocol.
 * [x] **Phase 2:** Implement lazy-loading HDF5 data ingestion and Pytest verification.
 * [x] **Phase 3:** Integrate CV augmentation and perform EDA mask alignment.
-* [ ] **Phase 4:** Construct PyTorch U-Net architecture.
+* [x] **Phase 4:** Construct PyTorch U-Net architecture.
 * [ ] **Phase 5:** Implement custom Dice/IoU loss functions and standard training loops.
 * [ ] **Phase 6:** Export inference engine for new, unlabelled TEM micrographs.
 
