@@ -27,3 +27,16 @@ def get_val_transforms(crop_size: int = 256) -> A.Compose:
         A.ToFloat(max_value=255.0),
         ToTensorV2()
     ])
+
+def get_inference_transforms(crop_size: int = 256) -> A.Compose:
+    """
+    Deterministic transforms for inference.
+
+    Uses the same intensity normalization convention as training/validation,
+    but removes random augmentations.
+    """
+    return A.Compose([
+        A.CenterCrop(height=crop_size, width=crop_size),
+        A.ToFloat(max_value=255.0),
+        ToTensorV2()
+    ])

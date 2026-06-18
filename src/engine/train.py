@@ -7,12 +7,12 @@ from pathlib import Path
 from src.data.dataset import LBNLTEMDataset
 from src.data.transforms import get_train_transforms
 from src.models.unet import UNet
-from src.engine.loss import DiceLoss
+from src.engine.loss import BCEDiceLoss
 
 # --- HYPERPARAMETERS ---
 LEARNING_RATE = 1e-4
 BATCH_SIZE = 4
-EPOCHS = 5  # Keeping this low for rapid prototyping
+EPOCHS = 10  # Keeping this low for rapid prototyping
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
@@ -34,7 +34,7 @@ def train_model() -> None:
     # 2. Initialize the Model, Loss, and Optimizer
     print("Initializing U-Net Architecture...")
     model = UNet(in_channels=1, out_channels=1).to(DEVICE)
-    criterion = DiceLoss()
+    criterion = BCEDiceLoss()
     # Adam is the industry standard optimizer for computer vision
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
@@ -48,7 +48,6 @@ def train_model() -> None:
             # Move physical data to the GPU (or CPU)
             images = images.to(DEVICE)
             masks = masks.to(DEVICE)
-
             # Step A: Forward Pass (Make a prediction)
             predictions = model(images)
 
@@ -64,7 +63,7 @@ def train_model() -> None:
 
         # Print metrics at the end of each epoch
         avg_loss = epoch_loss / len(train_loader)
-        print(f"Epoch [{epoch + 1}/{EPOCHS}] | Average Dice Loss: {avg_loss:.4f}")
+        print(f"Epoch [{epoch + 1}/{EPOCHS}] | Average Training Loss: {avg_loss:.4f}")
 
     # 4. Save the Model Weights
     print("--- Training Complete ---")
