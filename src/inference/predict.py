@@ -7,15 +7,15 @@ import torch
 
 from src.data.transforms import get_inference_transforms
 from src.models.unet import UNet
-
+from src.config import RAW_DATA_DIR, PROCESSED_DIR, IMAGES_FILENAME, MASKS_FILENAME, WEIGHTS_FILENAME
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-IMAGE_PATH = "data/raw/au_10nm_images.h5"
-MASK_PATH = "data/raw/au_10nm_labels.h5"
-WEIGHTS_PATH = "data/processed/unet_tem_weights.pth"
 
-OUTPUT_DIR = "data/processed/inference_debug"
+IMAGE_PATH = RAW_DATA_DIR / IMAGES_FILENAME
+MASK_PATH = RAW_DATA_DIR / MASKS_FILENAME
+WEIGHTS_PATH = PROCESSED_DIR / WEIGHTS_FILENAME
+OUTPUT_DIR = PROCESSED_DIR / "inference_debug"
 
 IMAGE_SIZE = 256
 THRESHOLD = 0.8

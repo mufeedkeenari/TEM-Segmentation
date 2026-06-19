@@ -2,7 +2,7 @@ import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from pathlib import Path
-
+from src.config import RAW_DATA_DIR, PROCESSED_DIR, IMAGES_FILENAME, MASKS_FILENAME, WEIGHTS_FILENAME
 # Import our custom modules from the previous steps
 from src.data.dataset import LBNLTEMDataset
 from src.data.transforms import get_train_transforms
@@ -23,8 +23,8 @@ def train_model() -> None:
     print("Loading data engine...")
     train_transforms = get_train_transforms(crop_size=256)
     train_dataset = LBNLTEMDataset(
-        images_path="data/raw/au_10nm_images.h5",
-        masks_path="data/raw/au_10nm_labels.h5",
+        images_path=RAW_DATA_DIR / IMAGES_FILENAME,
+        masks_path=RAW_DATA_DIR / MASKS_FILENAME,
         transform=train_transforms
     )
 
@@ -68,7 +68,7 @@ def train_model() -> None:
     # 4. Save the Model Weights
     print("--- Training Complete ---")
     Path("data/processed").mkdir(parents=True, exist_ok=True)
-    save_path = "data/processed/unet_tem_weights.pth"
+    save_path = PROCESSED_DIR / WEIGHTS_FILENAME
     torch.save(model.state_dict(), save_path)
     print(f"Model weights successfully saved to: {save_path}")
 
