@@ -17,7 +17,7 @@ This engine is trained on the public, peer-reviewed [Lawrence Berkeley National 
 * **Geometric Augmentation:** TEM data is orientation-agnostic. The pipeline integrates `Albumentations` to inject real-time physical variance (rotations, flips, scaling), artificially expanding the dataset and preventing model overfitting.
 * **Automated Mathematical Verification:** Features a comprehensive `pytest` suite utilizing mocked HDF5 matrices to assert tensor geometries (`CxHxW`) and categorical normalizations before forward-pass execution.
 
-## 🏗️ Project Architecture
+## ️ Project Architecture
 
 ```text
 TEM-Segmentation/
@@ -38,7 +38,7 @@ TEM-Segmentation/
 │   │   └── train.py       # Training loop with validation metrics
 │   └── inference/
 │       └── predict.py     # High-throughput inference script
-├── assets/                # Curated validation result images
+├── asset/                 # Curated validation result images
 ├── tests/
 │   ├── test_dataset.py    # Pytest sanity checks for tensor bounds
 │   └── test_unet.py       # Architecture validation tests
@@ -49,7 +49,7 @@ TEM-Segmentation/
 
 ## 📊 Validation Results
 
-After 100 epochs of GPU-accelerated training on Kaggle with an 80/20 train-validation split, the U-Net demonstrates strong generalization on held-out validation data (images 102-127, which were never seen during training).
+After 100 epochs of GPU-accelerated training with an 80/20 train-validation split, the U-Net demonstrates strong generalization on held-out validation data (images 102-127, which were never seen during training).
 
 ### Zero False Positives on Blank Backgrounds
 
@@ -77,9 +77,9 @@ On validation images containing dense nanoparticle clusters, the model achieves 
 
 This repository is designed for full reproducibility. The trained model weights (`unet_tem_weights.pth`) are intentionally excluded from version control to keep the repository lightweight and focus on the reproducible pipeline.
 
-### Local Training (CPU Smoke Test)
+The pipeline is designed to run on any PyTorch-compatible hardware. The `src/config.py` file automatically detects whether the code is running locally or on a cloud environment (like Kaggle or Colab) and adjusts file paths accordingly.
 
-To verify the pipeline works on your local hardware:
+### Setup and Training
 
 ```bash
 # Clone and setup
@@ -93,42 +93,17 @@ pip install -r requirements.txt
 # - au_10nm_images.h5
 # - au_10nm_labels.h5
 
-# Run a quick CPU training test (2 epochs)
+# Run the training pipeline
 python -m src.engine.train
 ```
 
-### GPU Training (Kaggle Workflow)
+### Running Inference
 
-For production-quality results, GPU acceleration is required. The recommended workflow uses Kaggle:
+Once the weights are generated in `data/processed/`, you can run the inference script to generate debug visualizations on the validation set:
 
-1. **Upload Data to Kaggle:**
-   - Create a new private dataset on Kaggle
-   - Upload `au_10nm_images.h5` and `au_10nm_labels.h5`
-   - Name it `lbnl-hrtem-dataset`
-
-2. **Create a Kaggle Notebook:**
-   - Enable Internet access
-   - Set Accelerator to **GPU T4 x2**
-   - Add your dataset as an input
-
-3. **Run Training:**
-   ```bash
-   !git clone https://github.com/mufeedkeenari/TEM-Segmentation.git
-   %cd TEM-Segmentation
-   !pip install -q -r requirements.txt
-   !python -m src.engine.train
-   ```
-
-4. **Download Weights:**
-   - After training completes, download `unet_tem_weights.pth` from the Output panel
-   - Place it in your local `data/processed/` folder
-
-5. **Run Inference:**
-   ```bash
-   python -m src.inference.predict
-   ```
-
-The `src/config.py` file automatically detects whether the code is running locally or on Kaggle and adjusts file paths accordingly.
+```bash
+python -m src.inference.predict
+```
 
 ## 🚀 Getting Started
 
@@ -158,19 +133,7 @@ Launch Jupyter to verify mask alignment on the physical TEM data:
 jupyter notebook notebooks/01_eda.ipynb
 ```
 
-**4. Train the Model**
-
-```bash
-python -m src.engine.train
-```
-
-**5. Run Inference**
-
-```bash
-python -m src.inference.predict
-```
-
-## 📈 Roadmap
+##  Roadmap
 
 * [x] **Phase 1:** Scaffold modular architecture and strict `.gitignore` protocol.
 * [x] **Phase 2:** Implement lazy-loading HDF5 data ingestion and Pytest verification.
@@ -179,6 +142,7 @@ python -m src.inference.predict
 * [x] **Phase 5:** Implement custom BCE+Dice loss functions and training loops with validation metrics.
 * [x] **Phase 6:** Export inference engine and validate on held-out TEM micrographs.
 * [x] **Phase 7:** Optimize threshold selection and eliminate false positives on blank backgrounds.
+* [x] **Phase 8:** Implement environment-aware configuration for local/cloud parallel workflow.
 * [ ] **Phase 9:** Extend to multi-material datasets and variable magnification TEM images.
 * [ ] **Phase 10:** Implement learning rate scheduling and early stopping for improved convergence.
 
@@ -187,17 +151,17 @@ python -m src.inference.predict
 ### Loss Function
 
 The pipeline uses a hybrid **BCE + Dice Loss**:
-- **Binary Cross Entropy (BCE):** Provides stable pixel-wise gradient signals
-- **Dice Loss:** Optimizes for segmentation overlap, handling class imbalance
+- **Binary Cross Entropy (BCE):** Provides stable pixel-wise gradient signals.
+- **Dice Loss:** Optimizes for segmentation overlap, handling class imbalance.
 
 This combination is more robust than Dice loss alone, which can be unstable during early training epochs.
 
 ### Threshold Selection
 
 The threshold parameter (currently set to 0.80) converts probability maps into binary masks:
-- Model outputs a probability value (0.0 to 1.0) for each pixel
-- If probability > threshold, the pixel is classified as foreground (nanoparticle)
-- If probability ≤ threshold, the pixel is classified as background
+- The model outputs a probability value (0.0 to 1.0) for each pixel.
+- If probability > threshold, the pixel is classified as foreground (nanoparticle).
+- If probability ≤ threshold, the pixel is classified as background.
 
 The optimal threshold balances precision (avoiding false positives) and recall (detecting true nanoparticles). This project uses a high threshold (0.80) to prioritize precision, as false positives on blank backgrounds are particularly problematic in materials science applications.
 
@@ -215,6 +179,6 @@ This is a portfolio project demonstrating ML engineering best practices. For que
 
 ## 📧 Contact
 
-**Mufeed Keenari**  
+**Mufeed KEENARI**  
 GitHub: [@mufeedkeenari](https://github.com/mufeedkeenari)
-`
+linkedIn: https://www.linkedin.com/in/mufeed-keenari/
