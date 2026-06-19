@@ -3,17 +3,14 @@ import os
 from pathlib import Path
 
 # --- ENVIRONMENT DETECTION ---
-# Kaggle's cloud environment always has a /kaggle directory.
-# Your local Windows machine does not.
 IS_KAGGLE = os.path.exists("/kaggle")
 
 if IS_KAGGLE:
-    # On Kaggle, datasets are mounted in /kaggle/input/<your-dataset-name>
-    RAW_DATA_DIR = Path("/kaggle/input/lbnl-hrtem-dataset")
-    # /kaggle/working/ is the only place Kaggle lets you save files
+    # Updated to match Kaggle's nested folder structure
+    RAW_DATA_DIR = Path("/kaggle/input/datasets/mufeedkeenari/lbnl-hrtem-dataset")
     PROCESSED_DIR = Path("/kaggle/working")
 else:
-    # On your local PyCharm machine, use standard relative paths
+    # On my system
     RAW_DATA_DIR = Path("data/raw")
     PROCESSED_DIR = Path("data/processed")
 
