@@ -56,10 +56,14 @@ After 100 epochs of GPU-accelerated training on Kaggle with an 80/20 train-valid
 A critical failure mode in nanoparticle segmentation is hallucinating particles on empty backgrounds. The model correctly identifies blank TEM regions with maximum confidence scores below 0.04 (well below the 0.80 threshold), producing **zero false positives** on validation images with no nanoparticles.
 
 ![Blank Validation Image](assets/validation_blank_no_false_positives.png)
+*Figure 1: Validation image with no nanoparticles (Ground Truth: 0.0% coverage). Model prediction: completely blank, demonstrating calibrated confidence on empty backgrounds.*
+
+### Accurate Segmentation on Dense Nanoparticle Regions
 
 On validation images containing dense nanoparticle clusters, the model achieves precise segmentation with probability means closely matching ground truth coverage fractions.
 
 ![Dense Validation Image](assets/validation_dense_perfect_segmentation.png)
+*Figure 2: Validation image with dense nanoparticles (Ground Truth: 43.6% coverage, Model Probability Mean: 43.7%). The prediction closely matches the human-annotated mask.*
 
 **Quantitative Performance (Validation Set):**
 - **Average Validation Dice Score:** ~0.92-0.96 (varies by image complexity)
