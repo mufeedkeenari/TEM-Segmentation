@@ -12,7 +12,7 @@ from src.engine.loss import BCEDiceLoss
 # --- HYPERPARAMETERS ---
 LEARNING_RATE = 1e-4
 BATCH_SIZE = 4
-EPOCHS = 10  # Keeping this low for rapid prototyping
+EPOCHS = 50  # Keeping this low for rapid prototyping
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
