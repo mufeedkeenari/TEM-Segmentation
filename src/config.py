@@ -7,7 +7,7 @@ IS_KAGGLE = os.path.exists("/kaggle")
 
 if IS_KAGGLE:
     # Updated to match Kaggle's nested folder structure
-    RAW_DATA_DIR = Path("/kaggle/input/datasets/mufeedkeenari/lbnl-hrtem-dataset")
+    RAW_DATA_DIR = Path("/kaggle/input/datasets/mufeedkeenari/tem-segp2-au-10nm-images-h5-au-10nm-labels-h5")
     PROCESSED_DIR = Path("/kaggle/working")
 else:
     # On my system
